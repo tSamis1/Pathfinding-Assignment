@@ -6,6 +6,7 @@ class AlphaBeta:
         self.nodes = []
         self.alpha = 0
         self.beta = 0
+        self.numLeafNodes = 0
         self.readFile(inputFile)
         self.initializeNodes()
 
@@ -20,19 +21,26 @@ class AlphaBeta:
         edges = edges[1:-1]
 
         self.max_min = self.formatString(max_min)
+        self.max_min = self.formatMaxMin(self.max_min)
         self.edges = self.formatString(edges)
+        self.edges = self.formatEdges(self.edges)
 
     def formatString(self, input):
-        input_dict = {}
         input = input.split("),")
         for i in range(len(input)):
             input[i] = input[i][1:]
             input[i] = input[i][:1] + ":" + input[i][2:]
+        return input
 
-        for item in input:
+    def formatMaxMin(self, format_MaxMin):
+        input_dict = {item.split(":")[0] : item.split(":")[1] for item in format_MaxMin}
+        return input_dict
+
+    def formatEdges(self, format_Edges):
+        input_dict = {item.split(":")[0] : [] for item in format_Edges}
+        for item in format_Edges:
             item = item.split(":")
-            input_dict[item[0]] = item[1]
-
+            input_dict[item[0]].append(item[1])
         return input_dict
 
     def initializeNodes(self):
@@ -40,13 +48,14 @@ class AlphaBeta:
             self.nodes.append(i)
 
     def dfs_alpha_beta(self):
-        '''DFS ALGORITHM THRU ALPHA BETA'''
+        '''DFS ALGORITHM THROUGH ALPHA BETA'''
 
     def alpha_beta(self, current_node):
         if current_node == 'A':
             self.alpha = float("inf") * -1
             self.beta = float("inf")
         elif self.edges[current_node].isdigit():
+            self.numLeafNodes += 1
             return self.edges[current_node]
         elif self.max_min[current_node] == 'MAX':
             self.alpha = max(self.alpha, self.alpha_beta(self.edges[current_node]))
@@ -61,8 +70,8 @@ class AlphaBeta:
 
 def main():
     test = AlphaBeta("alphabeta_small.txt")
-    print(test.max_min)
-    print(test.edges)
-    print(test.nodes)
+    #print(test.max_min)
+    #print(test.edges)
+    #print(test.edges["A"])
 
 main()
