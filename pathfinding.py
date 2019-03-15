@@ -91,7 +91,7 @@ def astar(maze, start, end):
 
             # neighbour is already in the open list
             for checked_node in unchecked:
-                if neighbour == checked_node and neighbour.g >= checked_node.g:
+                if neighbour == checked_node and neighbour.g > checked_node.g:
                     continue
 
             # Add the neighbour to the open list
